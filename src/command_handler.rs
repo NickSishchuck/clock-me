@@ -1,3 +1,4 @@
+use crate::parsers::DurationParser;
 use crate::session_service::SessionService;
 use anyhow::Result;
 
@@ -35,10 +36,12 @@ impl CommandHandler {
     pub fn handle_clock_out(&self) -> Result<()> {
         let (project, duration) = self.session_service.end_session()?;
         println!("✓ Clocked out from project: {}", project.name);
-        println!(
-            "Session duration: {:.2} hours",
-            duration.num_minutes() as f64 / 60.0
-        );
+
+        // Use DurationParser for better formatting
+        println!("Session duration: {}", DurationParser::format(duration));
+
+        // Also show in decimal hours for convenience
+        println!("  ({:.2} hours)", duration.num_minutes() as f64 / 60.0);
         Ok(())
     }
 
@@ -52,10 +55,10 @@ impl CommandHandler {
             println!("Started at: {}", session.start.format("%Y-%m-%d %H:%M:%S"));
 
             let duration = status.current_time.signed_duration_since(session.start);
-            println!(
-                "Working for: {:.2} hours",
-                duration.num_minutes() as f64 / 60.0
-            );
+
+            // Use DurationParser for better formatting
+            println!("Working for: {}", DurationParser::format(duration));
+            println!("  ({:.2} hours)", duration.num_minutes() as f64 / 60.0);
         } else {
             println!("Status: Clocked OUT");
 
@@ -68,10 +71,7 @@ impl CommandHandler {
                 if let Some(end) = last_session.end {
                     println!("  Ended: {}", end.format("%Y-%m-%d %H:%M:%S"));
                     if let Some(duration) = last_session.duration() {
-                        println!(
-                            "  Duration: {:.2} hours",
-                            duration.num_minutes() as f64 / 60.0
-                        );
+                        println!("  Duration: {}", DurationParser::format(duration));
                     }
                 }
             }

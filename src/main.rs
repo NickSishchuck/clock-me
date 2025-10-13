@@ -11,15 +11,14 @@ struct Args {
 
 #[derive(Subcommand)]
 enum Commands {
-    /// Initialize a new time tracking project
     Init {
         /// Name of the project
         #[arg(short, long)]
         name: Option<String>,
     },
-    /// Clock in and start tracking time
+    /// Clock in
     Now,
-    /// Clock out and stop tracking time
+    /// Clock out
     Out,
     /// Show current tracking status
     Status,

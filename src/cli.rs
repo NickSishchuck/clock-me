@@ -2,6 +2,7 @@ use crate::clock::SystemClock;
 use crate::command_handler::CommandHandler;
 use crate::repository::FileRepository;
 use crate::session_service::SessionService;
+use crate::validators::ProjectValidator;
 use anyhow::Result;
 use std::io::{self, Write};
 
@@ -30,6 +31,9 @@ impl CLI {
                 input.trim().to_string()
             }
         };
+
+        // Validate the project name using regex
+        ProjectValidator::validate_name(&project_name)?;
 
         self.handler.handle_init(project_name)
     }

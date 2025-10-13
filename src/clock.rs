@@ -3,13 +3,11 @@ use chrono::{DateTime, Local};
 #[cfg(test)]
 use mockall::automock;
 
-/// Clock trait for time abstraction (makes testing easier)
 #[cfg_attr(test, automock)]
 pub trait Clock: Send + Sync {
     fn now(&self) -> DateTime<Local>;
 }
 
-/// System clock implementation
 pub struct SystemClock;
 
 impl Clock for SystemClock {
