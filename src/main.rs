@@ -1,5 +1,5 @@
 use clap::{Parser, Subcommand};
-use clockme::cli::CLI;
+use clock_me::cli::CLI;
 
 #[derive(Parser)]
 #[command(name = "clock-me")]

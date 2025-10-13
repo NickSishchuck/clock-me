@@ -46,39 +46,65 @@
 classDiagram
     class CLI {
         <<entry point>>
+        -commands: CommandHandler
         +main()
-        +parse_args()
     }
     
-    class TimeTracker {
-        -project_path: PathBuf
-        +init(project_name: String)
-        +clock_in()
-        +clock_out()
-        +status()
+    class CommandHandler {
+        -session_service: SessionService
+        +handle_init(name: String)
+        +handle_clock_in()
+        +handle_clock_out()
+        +handle_status()
+    }
+    
+    class SessionService {
+        -repository: Box~dyn Repository~
+        -clock: Box~dyn Clock~
+        +init_project(name: String)
+        +start_session()
+        +end_session()
+        +get_status()
+    }
+    
+    class Repository {
+        <<trait>>
+        +load() Result~Project~
+        +save(project: Project) Result
+    }
+    
+    class FileRepository {
+        -path: PathBuf
+        +new(path: PathBuf)
+    }
+    
+    class Clock {
+        <<trait>>
+        +now() DateTime
+    }
+    
+    class SystemClock {
+        +now() DateTime
     }
     
     class Project {
         +name: String
         +current_session: Option~Session~
         +sessions: Vec~Session~
-        +new(name: String)
-        +save_to_file(path: PathBuf)
-        +load_from_file(path: PathBuf)
-        +start_session()
-        +end_session()
     }
     
     class Session {
         +start: DateTime
         +end: Option~DateTime~
-        +new()
-        +finish(end_time: DateTime)
-        +duration() Duration
-        +is_active() bool
+        +duration() Option~Duration~
     }
     
-    CLI --> TimeTracker : uses
-    TimeTracker --> Project : manages
-    Project --> Session : contains
+    CLI --> CommandHandler
+    CommandHandler --> SessionService
+    SessionService --> Repository
+    SessionService --> Clock
+    Repository <|.. FileRepository : implements
+    Clock <|.. SystemClock : implements
+    SessionService ..> Project : uses
+    Project --> Session
 ```
