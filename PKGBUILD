@@ -1,6 +1,6 @@
 # Maintainer: Mykyta Syshchuk (mikiitasisuk@gmail.com)
 pkgname=clock-me
-pkgver=0.1.0
+pkgver=1.0.0
 pkgrel=1
 pkgdesc="A simple CLI time tracker"
 arch=('x86_64')

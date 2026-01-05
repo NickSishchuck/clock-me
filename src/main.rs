@@ -11,15 +11,17 @@ struct Args {
 
 #[derive(Subcommand)]
 enum Commands {
+    /// Initialize a new project
     Init {
-        /// Name of the project
         #[arg(short, long)]
         name: Option<String>,
     },
-    /// Clock in
-    Now,
+    /// Clock in (or continue from break)
+    Start,
     /// Clock out
-    Out,
+    Stop,
+    /// Take a break
+    Break,
     /// Show current tracking status
     Status,
 }
@@ -30,8 +32,9 @@ fn main() {
 
     let result = match args.command {
         Commands::Init { name } => cli.handle_init(name),
-        Commands::Now => cli.handle_now(),
-        Commands::Out => cli.handle_out(),
+        Commands::Start => cli.handle_now(),
+        Commands::Stop => cli.handle_out(),
+        Commands::Break => cli.handle_break(),
         Commands::Status => cli.handle_status(),
     };
 

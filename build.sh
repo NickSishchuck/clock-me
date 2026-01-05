@@ -2,7 +2,7 @@
 set -e
 
 name="clock-me"
-version="0.1.0"
+version="1.0.0"
 
 build_dir="build"
 install_dir="install"

@@ -32,7 +32,6 @@ impl CLI {
             }
         };
 
-        // Validate the project name using regex
         ProjectValidator::validate_name(&project_name)?;
 
         self.handler.handle_init(project_name)
@@ -44,6 +43,10 @@ impl CLI {
 
     pub fn handle_out(&self) -> Result<()> {
         self.handler.handle_clock_out()
+    }
+
+    pub fn handle_break(&self) -> Result<()> {
+        self.handler.handle_break()
     }
 
     pub fn handle_status(&self) -> Result<()> {
